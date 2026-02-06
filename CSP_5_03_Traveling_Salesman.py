@@ -8,6 +8,9 @@ def getPathDistance(places : list):
     #Given a list of x,y coordinates return the distance it would take to go to each coordinate
     # in order and then back to the start.
     dist = 0
+    for i in range(0,len(places)-1):
+        dist += getDistance(places[i], places[i+1])
+    dist += getDistance(places[0], places[len(places)-1])
     return dist
 
 
@@ -15,9 +18,17 @@ def full_TSP(places : list):
     #Check the distance of all possible different paths one could take over a set of x,y coordiantes
     #and return the path with the shotest distance
     #Print out the number of distance calculations you had to do.
+    permutations = generatePermutations(places)
+    calculations = len(permutations)
 
-    bestRoute = []
-    calculations = 0
+    shortestDist = getPathDistance(permutations[0])
+    bestRoute = permutations[0]
+
+    for i in range (1, len(permutations)):
+        dist = getPathDistance(permutations[i])
+        if dist < shortestDist:
+            shortestDist = dist
+            bestRoute = permutations[i]
 
     print(f"there were {calculations} calculations for full TSP")
     return bestRoute
